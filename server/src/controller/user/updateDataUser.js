@@ -2,7 +2,8 @@ import { validationResult } from "express-validator";
 import User from "../../models/userModel.js";
 
 
-const addNewDataUser = (req, res) => {
+const updateDataUser = (req, res) => {
+  const { id } = req.params
   const { name, userName, email, password, birthday, role } = req.body;
   const date = new Date(birthday)
   const dateFormattted = date.toLocaleDateString("id-ID", {
@@ -25,16 +26,16 @@ const addNewDataUser = (req, res) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-    const err = new Error('gagal menambahkan akun, data tidak valid')
+    const err = new Error('gagal mengupdate akun, data tidak valid')
     err.errorStatus = 400
     err.data = errors.array()
     throw err
   }
   
-  const addUser = new User(dataUser)
   
-  addUser.save()
+  User.findOneAndUpdate({_id: id}, dataUser, {new: true})
     .then(user => {
+      console.log(user);
       res.status(201).json(
         {
           message: "sukses",
@@ -45,14 +46,12 @@ const addNewDataUser = (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(401).json(
+      res.status(404).json(
         {
-          message: "data tidak valid",
-          error: true,
-          data: err
+          message: "gagal mengupdate data, id tidak ditemukan",
         }
       )
     })
 }
 
-export default addNewDataUser
+export default updateDataUser

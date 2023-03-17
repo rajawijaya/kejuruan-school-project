@@ -24,7 +24,14 @@ app.use((err, req, res, next) => {
   const status = err.errorStatus
   const message = err.message
   const data = err.data
+  let dataMap = []
   
+  data.map(d => {
+    dataMap += {
+      parameter: d.param,
+      message: d.msg
+    }
+  })
   data.map(d => {
     console.log({parameter: d.param, message: d.msg})
   })
@@ -33,7 +40,12 @@ app.use((err, req, res, next) => {
       {
         message,
         error: true,
-        data
+        data: data.map(d => {
+          return {
+            parameter: d.param,
+            message: d.msg
+          }
+        })
       }
     )
 })

@@ -5,7 +5,7 @@ const getAllDataUsers = (req, res) => {
   userModel.find()
     .then(users => {
       res.status(200).json({
-        message: 'success',
+        message: 'sukses',
         error: false,
         data: users
       })

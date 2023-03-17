@@ -48,11 +48,11 @@ const validateUser = [
     .notEmpty()
     .withMessage('Tanggal lahir harus diisi')
     .matches(/^\d{1,2}\/\d{1,2}\/\d{4}$/)
-    .withMessage('Format tanggal salah. Contoh format yang benar adalah "5/31/2006".'),
+    .withMessage('Format tanggal salah. Contoh format yang benar adalah 5/31/2006'),
   body('role')
     .optional()
     .isIn(['siswa', 'guru', 'admin'])
-    .withMessage('Role tidak valid'),
+    .withMessage('Role tidak valid, Role harus memiliki data antara siswa, guru, atau admin'),
 ];
 
 export default validateUser;

@@ -5,15 +5,18 @@ const getAllDataUsers = (req, res) => {
   userModel.find()
     .then(users => {
       res.status(200).json({
-        message: 'sukses',
+        message: 'Success',
         error: false,
+        status: 200
         data: users
       })
     })
     .catch(err => {
-      res.status(400).json({
+      res.status(500).json({
         message: 'error',
-        data: err
+        error: true,
+        status: 500,
+        errorMsg: err
       })
     })
 }

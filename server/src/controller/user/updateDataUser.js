@@ -26,7 +26,7 @@ const updateDataUser = (req, res) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-    const err = new Error('gagal mengupdate akun, data tidak valid')
+    const err = new Error('Failed to update account, invalid data.')
     err.errorStatus = 400
     err.data = errors.array()
     throw err
@@ -35,20 +35,22 @@ const updateDataUser = (req, res) => {
   
   User.findOneAndUpdate({_id: id}, dataUser, {new: true})
     .then(user => {
-      console.log(user);
       res.status(201).json(
         {
-          message: "sukses",
+          message: "Success",
           error: false,
+          status: 201,
           data: user
         }
       )
     })
     .catch(err => {
-      console.log(err);
       res.status(404).json(
         {
-          message: "gagal mengupdate data, id tidak ditemukan",
+          message: "Failed, an error occurred while updating the data.",
+          error: true,
+          status: 404,
+          errorMsg: err
         }
       )
     })

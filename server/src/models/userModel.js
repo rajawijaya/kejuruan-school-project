@@ -79,8 +79,7 @@ const userSchema = new Schema({
     default: "siswa"
   },
 }, {
-  timestamps: true,
-  collection: "UserData"
+  timestamps: true
 })
 
 const User = mongoose.model("User", userSchema)

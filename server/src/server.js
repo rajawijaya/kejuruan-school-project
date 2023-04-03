@@ -9,9 +9,8 @@ import userRouter from "./routes/userRouter.js";
 const app = express()
 dotenv.config()
 
-const uri = `mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@cluster0.ziztsuh.mongodb.net/kejuruan_school_database?retryWrites=true&w=majority`
-const port = 3000
-const host = "localhost"
+const port = 5000
+const host = "127.0.0.1"
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,22 +23,12 @@ app.use((err, req, res, next) => {
   const status = err.errorStatus
   const message = err.message
   const data = err.data
-  let dataMap = []
-  
-  data.map(d => {
-    dataMap += {
-      parameter: d.param,
-      message: d.msg
-    }
-  })
-  data.map(d => {
-    console.log({parameter: d.param, message: d.msg})
-  })
   
   res.status(status).json(
       {
         message,
         error: true,
+        status,
         data: data.map(d => {
           return {
             parameter: d.param,
@@ -50,15 +39,15 @@ app.use((err, req, res, next) => {
     )
 })
 
-mongoose.connect(uri)
+mongoose.connect(process.env.MONGODB_URI)
   .then( (res) => {
-      app.listen(port, host, () => {
+      app.listen(port, () => {
         console.log(`server running on http://${host}:${port}`);
       })
     }
   )
   .catch( (err) => {
-      console.log(err);
+      console.log(err)
     }
   )
 

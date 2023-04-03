@@ -8,7 +8,9 @@ const deleteDataUser = (req, res) => {
     .then( data => {
         res.json(
           {
-            message: "sukses",
+            message: "Success, the data was successfully deleted.",
+            error: false,
+            status: 200,
             data
           }
         )
@@ -17,7 +19,10 @@ const deleteDataUser = (req, res) => {
     .catch( err => {
         res.status(404).json(
           {
-            message: "gagal, data gagal dihapus, id tidak ditemukan",
+            message: "Failed, data cannot be deleted.",
+            error: true,
+            status: 404,
+            errorMsg: err
           }
         )
       }

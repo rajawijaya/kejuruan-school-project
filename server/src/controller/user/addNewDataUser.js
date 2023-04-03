@@ -1,7 +1,6 @@
 import { validationResult } from "express-validator";
 import User from "../../models/userModel.js";
 
-
 const addNewDataUser = (req, res) => {
   const { name, userName, email, password, birthday, role } = req.body;
   const date = new Date(birthday)
@@ -25,7 +24,7 @@ const addNewDataUser = (req, res) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-    const err = new Error('gagal menambahkan akun, data tidak valid')
+    const err = new Error('Failed to add account, invalid data.')
     err.errorStatus = 400
     err.data = errors.array()
     throw err
@@ -37,7 +36,7 @@ const addNewDataUser = (req, res) => {
     .then(user => {
       res.status(201).json(
         {
-          message: "sukses",
+          message: "success",
           error: false,
           data: user
         }
@@ -47,9 +46,9 @@ const addNewDataUser = (req, res) => {
       console.log(err);
       res.status(401).json(
         {
-          message: "data tidak valid",
+          message: "failed",
           error: true,
-          data: err
+          errorMsg: err
         }
       )
     })

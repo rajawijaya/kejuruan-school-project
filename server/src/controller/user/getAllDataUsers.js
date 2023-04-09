@@ -7,7 +7,7 @@ const getAllDataUsers = (req, res) => {
       res.status(200).json({
         message: 'Success',
         error: false,
-        status: 200
+        status: 200,
         data: users
       })
     })

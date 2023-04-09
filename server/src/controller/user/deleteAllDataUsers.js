@@ -6,7 +6,7 @@ const deleteAllDataUsers = (req, res) => {
     .then( data => {
       res.json(
         {
-          message: `${data.deletedCount} data deleted successfully.`
+          message: `${data.deletedCount} data deleted successfully.`,
           error: false,
           status: 200
         }

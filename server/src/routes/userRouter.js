@@ -5,7 +5,7 @@ import getAllDataUsers from "../controller/user/getAllDataUsers.js";
 import addNewDataUser from "../controller/user/addNewDataUser.js";
 import deleteDataUser from "../controller/user/deleteDataUser.js";
 import deleteAllDataUsers from "../controller/user/deleteAllDataUsers.js";
-import authVerify from "../controller/auth/authVerify.js";
+import jwtAuth from "../controller/auth/jwtAuth.js";
 import updateDataUser from "../controller/user/updateDataUser.js";
 import validateUser from "../controller/validate/validateUser.js";
 
@@ -15,7 +15,9 @@ router.get("/", getAllDataUsers)
 
 router.post("/signup", validateUser ,addNewDataUser)
 
-router.post("/signin",  authVerify ,getDataUser)
+router.post("/signin" ,getDataUser)
+
+router.post("/profile" ,jwtAuth)
 
 router.put("/update/:id", validateUser ,updateDataUser)
 

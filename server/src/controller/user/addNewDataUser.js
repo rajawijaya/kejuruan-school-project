@@ -38,6 +38,7 @@ const addNewDataUser = (req, res) => {
         {
           message: "success",
           error: false,
+          status: 201,
           data: user
         }
       )

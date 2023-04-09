@@ -18,7 +18,6 @@ const userSchema = new Schema({
       return emailParts[0];
     },
     unique: true,
-    lowercase: true,
     validate: [
       {
         validator: (value) => {

@@ -3,43 +3,9 @@ import dotenv from "dotenv";
 dotenv.config()
 import User from "../../models/userModel.js";
 
-const authVerify = (req, res, next) => {
+const jwtAuth = (req, res) => {
   const cookie = req.cookies.TOKEN
-  const { userName, password } = req.body
-  
-  if (userName && !password) {
-    res.status(401).json(
-      {
-        message: 'error',
-        error: true,
-        status: 401,
-        errorMsg: 'Password is required'
-      }
-    )
-  }
-  
-  if (!userName && password) {
-    res.status(401).json(
-      {
-        message: 'error',
-        error: true,
-        status: 401,
-        errorMsg: 'Username is required'
-      }
-    )
-  }
-  
-  if (!userName && !password && !cookie) {
-    res.status(401).json(
-      {
-        message: 'error',
-        error: true,
-        status: 401,
-        errorMsg: 'Authentication is required'
-      }
-    )
-  }
-  
+
   if (cookie) {
     jwt.verify(cookie, process.env.JWT_SECRET, (err, decode) => {
       if (decode) {
@@ -75,11 +41,17 @@ const authVerify = (req, res, next) => {
           )
       }
     })
+    return;
   }
+
+  res.status(404).json(
+    {
+      message: "Token not found",
+      error: true,
+      status: 404
+    }
+  )
   
-  if (userName && password) {
-   next()
-  }
 }
 
-export default authVerify
+export default jwtAuth

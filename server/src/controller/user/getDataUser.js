@@ -1,14 +1,23 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt"
 dotenv.config()
 import User from "../../models/userModel.js";
 
 
 const getDataUser = (req, res) => {
   const { userName, password } = req.body
+
+  if (!userName || !password) {
+    return res.status(401).json({
+      message: "Username and password requirement!",
+      error: true,
+      status: 401,
+    });
+  }
   
   User.findOne({userName})
-    .then((data) => {
+    .then( async (data) => {
       if (!data) {
         return res.status(404).json({
           message: "User not found",
@@ -16,15 +25,17 @@ const getDataUser = (req, res) => {
           status: 404,
         });
       }
-      
-      if (password !== data.password) {
+
+      const comparePass = await bcrypt.compare(password, data.password)
+
+      if (!comparePass) {
         return res.status(401).json({
           message: "Invalid password",
           error: true,
           status: 401,
         });
       }
-      
+ 
       const token = jwt.sign({userName, exp: Math.floor(Date.now() / 1000) + (60)}, process.env.JWT_SECRET)
       res.cookie("TOKEN", token)
       res.status(200).json(

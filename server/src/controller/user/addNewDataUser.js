@@ -1,7 +1,10 @@
 import { validationResult } from "express-validator";
+import bcrypt from "bcrypt"
 import User from "../../models/userModel.js";
 
-const addNewDataUser = (req, res) => {
+
+
+const addNewDataUser = async (req, res) => {
   const { name, userName, email, password, birthday, role } = req.body;
   const date = new Date(birthday)
   const dateFormattted = date.toLocaleDateString("id-ID", {
@@ -10,12 +13,13 @@ const addNewDataUser = (req, res) => {
     year: "numeric",
     day: "numeric"
   })
+  const passHashed = await bcrypt.hash(password, 10)
   
   const dataUser = {
     name,
     userName: userName || email.split("@")[0],
     email,
-    password,
+    password: passHashed,
     imageUrl: null,
     birthday: dateFormattted,
     role
